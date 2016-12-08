@@ -1,0 +1,30 @@
+---
+title: "R Notebook"
+runtime: shiny
+output: html_document
+---
+
+
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, results='hide'}
+library(shiny)
+source('sim_data.function.R')
+```
+
+```{r}
+inputPanel(
+  selectInput('n', label='Number of observations',
+              choices = c(10, 100, 200, 500, 1000, 5000, 10000),
+              selected = 1000
+              ),
+  sliderInput('eta_sq', label='eta_sq', min=0, max=10, value=1),
+  sliderInput('rho_sq', label='rho_sq', min=0, max=10, value=1),
+  sliderInput('sigma_sq', label='sigma_sq', min=0, max=10, value=0.1)
+)
+
+renderPlot(
+  ggplot(sim_data(n=input$n, eta_sq=input$eta_sq, rho_sq=input$rho_sq, sigma_sq=input$sigma_sq),
+         aes(x=x, y=y)) +
+    geom_line()
+)
+```
+
