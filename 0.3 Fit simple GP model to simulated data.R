@@ -42,7 +42,11 @@ model {
 }
 "
 
-df <- sim_data(n=1000)
+df <- sim_data(n=1000, sigma_sq=0.1, eta_sq=10, rho_sq=0.1)
+ggplot(df, aes(x=x, y=y)) + geom_line()
 
+standata <- list(N=nrow(df), x=df$x, y=df$y)
+fit <- rstan::stan(model_code=gp2, data=standata)
+print(fit)
 
 
